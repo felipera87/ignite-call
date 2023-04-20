@@ -1,4 +1,4 @@
-import { globalCss } from "@felipe_ignite_ui/react";
+import { globalCss } from '@felipe_ignite_ui/react'
 
 export const globalStyles = globalCss({
   '*': {
