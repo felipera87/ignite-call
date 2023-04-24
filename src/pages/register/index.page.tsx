@@ -6,10 +6,36 @@ import {
   TextInput,
 } from '@felipe_ignite_ui/react'
 import { ArrowRight } from 'phosphor-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Container, Form, Header } from './styles'
+import { Container, Form, FormError, Header } from './styles'
+
+const registerFormSchema = z.object({
+  username: z
+    .string()
+    .min(3, { message: 'Mínimo de 3 letras.' })
+    .regex(/^([a-z\\-]+)$/i, { message: 'Só pode conter letras e hifen.' })
+    .transform((username) => username.toLocaleLowerCase()),
+  name: z.string().min(3, { message: 'Mínimo de 3 letras.' }),
+})
+
+type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerFormSchema),
+  })
+
+  function handleRegister(data: RegisterFormData) {
+    console.log(data)
+  }
+
   return (
     <Container>
       <Header>
@@ -22,18 +48,30 @@ export default function Register() {
         <MultiStep size={4} currentStep={1} />
       </Header>
 
-      <Form as="form">
+      <Form as="form" onSubmit={handleSubmit(handleRegister)}>
         <label>
           <Text size="sm">Nome de usuário</Text>
-          <TextInput prefix="ignite.com/" placeholder="seu-usuário" />
+          <TextInput
+            prefix="ignite.com/"
+            placeholder="seu-usuário"
+            {...register('username')}
+          />
+
+          {errors.username && (
+            <FormError size="sm">{errors.username.message}</FormError>
+          )}
         </label>
 
         <label>
           <Text size="sm">Nome completo</Text>
-          <TextInput placeholder="Seu nome" />
+          <TextInput placeholder="Seu nome" {...register('name')} />
+
+          {errors.name && (
+            <FormError size="sm">{errors.name.message}</FormError>
+          )}
         </label>
 
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitting}>
           Próximo passo
           <ArrowRight />
         </Button>
