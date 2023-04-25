@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  Avatar,
   Button,
   Heading,
   MultiStep,
   Text,
   TextArea,
 } from '@felipe_ignite_ui/react'
+import { useRouter } from 'next/router'
 import { GetServerSideProps } from 'next'
 import { getServerSession } from 'next-auth'
 import { useSession } from 'next-auth/react'
@@ -32,10 +34,11 @@ export default function UpdateProfile() {
   })
 
   const session = useSession()
+  const router = useRouter()
 
-  console.log(session)
-
-  async function handleUpdateProfile(data: UpdateProfileData) {}
+  async function handleUpdateProfile(data: UpdateProfileData) {
+    await router.push(`/schedule/${session.data?.user.username}`)
+  }
 
   return (
     <Container>
@@ -46,12 +49,17 @@ export default function UpdateProfile() {
           editar essas informações depois.
         </Text>
 
-        <MultiStep size={4} currentStep={1} />
+        <MultiStep size={4} currentStep={4} />
       </Header>
 
       <ProfileBox as="form" onSubmit={handleSubmit(handleUpdateProfile)}>
         <label>
           <Text>Foto de perfil</Text>
+          <Avatar
+            src={session.data?.user.avatar_url}
+            referrerPolicy="no-referrer"
+            alt={session.data?.user.name}
+          />
         </label>
 
         <label>

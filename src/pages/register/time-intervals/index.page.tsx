@@ -7,6 +7,7 @@ import {
   TextInput,
 } from '@felipe_ignite_ui/react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import { api } from '../../../lib/axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -86,6 +87,8 @@ export default function TimeIntervals() {
     },
   })
 
+  const router = useRouter()
+
   const weekDays = getWeekDays()
 
   const { fields } = useFieldArray({
@@ -101,6 +104,8 @@ export default function TimeIntervals() {
     await api.post('/users/time-intervals', {
       intervals,
     })
+
+    await router.push('/register/update-profile')
   }
 
   return (
