@@ -20,3 +20,13 @@ To use google OAuth you need to create a new project on [Google Cloud](https://c
 - Copy the values and fill the .env variables
 - Go to API and services section to activate calendar API
 - Click Activate API and services, search for the google calendar and activate it
+
+### Start MySQL
+For first time users:
+```
+docker run --name mysqlignite -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 mysql:latest
+
+# to start/stop container
+docker start mysqlignite
+docker stop mysqlignite
+```
