@@ -8,6 +8,8 @@ Prisma ORM was initialized with `npx prisma init --datasource-provider SQLite`.
 
 The file `schema.prisma` contains all models, its columns and relations. After modifying this file you need to generate a migration based on its changes, run `npx prisma migrate dev` to achieve this (this command also runs the migration).
 
+If you prefer just to execute existing migrations, without comparing with model, just run `npx prisma db push`.
+
 To view database tables and registers you can use prisma studio with `npx prisma studio`.
 
 ### Google OAuth and Calendar activation
@@ -30,3 +32,5 @@ docker run --name mysqlignite -e MYSQL_ROOT_PASSWORD=docker -p 3306:3306 mysql:l
 docker start mysqlignite
 docker stop mysqlignite
 ```
+
+Database is hosted on [planetscale](https://app.planetscale.com/), which is a good option to integrate with Vercel because it kills the instance if there is no usage, which would be a problem to deal with db connection pooling.
